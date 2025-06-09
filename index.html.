@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Сервис заявок</title>
+  <style>
+    body { font-family: Arial; max-width: 400px; margin: 20px auto; background:#f7f7f7; padding:20px; }
+    h1 { text-align:center; }
+    button { margin: 5px; padding: 10px 15px; }
+    button.selected { background: #4caf50; color: white; }
+    input, textarea { width: 100%; margin: 8px 0; padding: 8px; box-sizing: border-box; }
+    form { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 0 5px #ccc; }
+    #result { margin-top: 15px; padding: 10px; background: #dff0d8; color: #3c763d; display: none; }
+  </style>
+</head>
+<body>
+
+<h1>Сервис заявок</h1>
+
+<div id="services">
+  <button onclick="selectService(this)">Ремонт электрики</button>
+  <button onclick="selectService(this)">Сантехника</button>
+  <button onclick="selectService(this)">Уборка</button>
+  <button onclick="selectService(this)">Малярные работы</button>
+  <button onclick="selectService(this)">Обслуживание техники</button>
+</div>
+
+<form id="requestForm">
+  <input type="text" id="serviceInput" placeholder="Выберите услугу" readonly required />
+  <input type="date" id="dateInput" required />
+  <input type="time" id="timeInput" required />
+  <textarea id="commentInput" placeholder="Комментарий (необязательно)"></textarea>
+  <button type="submit">Отправить заявку</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+  function selectService(button) {
+    document.querySelectorAll('#services button').forEach(b => b.classList.remove('selected'));
+    button.classList.add('selected');
+    document.getElementById('serviceInput').value = button.textContent;
+  }
+
+  document.getElementById('requestForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const service = document.getElementById('serviceInput').value;
+    const date = document.getElementById('dateInput').value;
+    const time = document.getElementById('timeInput').value;
+    const comment = document.getElementById('commentInput').value || '(нет комментариев)';
+    if (!service) return alert('Пожалуйста, выберите услугу.');
+
+    const result = document.getElementById('result');
+    result.style.display = 'block';
+    result.innerHTML = `<b>Заявка отправлена!</b><br>
+      Услуга: ${service}<br>Дата: ${date}<br>Время: ${time}<br>Комментарий: ${comment}`;
+
+    e.target.reset();
+    document.querySelectorAll('#services button').forEach(b => b.classList.remove('selected'));
+  });
+</script>
+
+</body>
+</html>
